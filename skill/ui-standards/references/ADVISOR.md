@@ -18,17 +18,30 @@ Format each question as:
   c) Not sure — use the recommendation
 ```
 
-## Round 1 · Shape of the app (ask first)
+## Round 1 · Target first
+
+Ask Q0 before any other question. Ask only the follow-ups relevant to that target.
 
 | # | Question | Options (recommended first) | Activates |
 |---|---|---|---|
-| Q1 | Do people need their own account? | Yes, email + password / Yes, sign in with Google or Apple / No accounts | FE-ACCT-01, FE-ACCT-02, FE-ACCT-03, BE-AUTH-01, BE-AUTH-02, BE-AUTH-03, BE-AUTH-04 |
+| Q0 | Where will this app run? | In a browser / Installed on my computer / Installed on a phone or tablet / A mix / Something else | Choose a profile in PROFILES.md; desktop loads FE-DESK and excludes web-only families unless needed |
+
+If **desktop**, ask: "Does it keep files on this computer, use an online account, or both?"
+Do not ask about accounts, roles or hosted APIs for a single-user local app unless sharing
+or sync is part of the brief. Ask which operating systems only if cross-platform support
+changes the plan.
+
+## Round 2 · Shape of the app
+
+| # | Question | Options (recommended first) | Activates |
+|---|---|---|---|
+| Q1 | Do people need their own account? (Skip for a single-user local desktop app.) | Yes, email + password / Yes, sign in with Google or Apple / No, one local user | FE-ACCT-01, FE-ACCT-02, FE-ACCT-03, BE-AUTH-01, BE-AUTH-02, BE-AUTH-03, BE-AUTH-04 |
 | Q2 | Are there different kinds of users with different powers? | Just one kind / Owner + members / Admin + staff + customers | BE-AUTH-05, FE-ACCT-07 |
-| Q3 | Where will it be used? | Web on phone and computer / Phone app / Desktop only | FE-SHELL-01, FE-SHELL-03 |
+| Q3 | If this is a desktop app, which operating systems must it support? | This computer only / Windows and Mac / Windows, Mac and Linux | FE-DESK-01 |
 | Q4 | What are the main things the app keeps? (e.g. projects, recordings, orders) | free text | BE-DATA-01, BE-API-01, FE-COLL-01, FE-COLL-02, FE-COLL-06 |
 | Q5 | Will people upload files, photos, audio or video? | No / Images / Audio or video / Any document | FE-FORM-04, BE-FILE-01, BE-FILE-02, BE-FILE-03, FE-MEDIA-01 |
 
-## Round 2 · Behaviour
+## Round 3 · Behaviour
 
 | # | Question | Options | Activates |
 |---|---|---|---|
@@ -38,7 +51,13 @@ Format each question as:
 | Q9 | Can people share or work on the same thing together? | No / Share read-only links / Edit together | BE-AUTH-06, BE-API-07 |
 | Q10 | When something is deleted, should it be recoverable? | Yes, a bin for 30 days / Undo only / No, gone | FE-FEED-02, BE-DATA-03 (CORE F16) |
 
-## Round 3 · Business and risk
+| Q16 | Does any action call a service that charges money or uses limited credits? | No / Yes, each run costs or uses credits / Not sure | FE-COST-01, BE-COST-01, FE-DESK-03 |
+
+If **yes**, ask what action triggers it, what input is sent, how the owner sees the estimate,
+and what per-run or monthly limit to use. Never infer consent to a charge from choosing a
+provider or describing a feature.
+
+## Round 4 · Business and risk (networked apps only unless relevant)
 
 | # | Question | Options | Activates |
 |---|---|---|---|

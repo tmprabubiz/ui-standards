@@ -1,12 +1,12 @@
 # ui-standards — Blueprint
 
-Version 1.0 · 2026-10-01 · Status: built
+Version 1.2 · 2026-10-01 · Status: built
 
 ## 1. Goal
 
 Give a non-technical app owner a **standard-parts catalogue** that any AI coding agent
 (Claude Code, Codex, Copilot, Cursor, others that read `AGENTS.md` or Agent Skills) loads
-on demand, so that:
+on demand, routed first by app target (web, desktop, mobile, hybrid), so that:
 
 1. Conventional front-end **and** back-end behaviour is built by default, not rediscovered
    through prompt wording.
@@ -50,6 +50,10 @@ Gaps the research left open and this blueprint closes:
 | Tool lock-in (Claude-only examples) | Agent Skills standard + adapters for AGENTS.md / CLAUDE.md / Copilot / Cursor |
 | Catalogue drift / bloat | `scripts/validate.mjs` (format, budget, references) + generated `INDEX.md` |
 | App shell, account, settings, onboarding, i18n missing | `FE-SHELL`, `FE-ACCT` families |
+| Real desktop/local-first workflow did not fit web-shaped defaults | `PROFILES.md`, `indexes/desktop.md`, `FE-DESK`, `BE-LOCAL` |
+| Paid provider calls lacked per-action safeguards | `FE-COST`, `BE-COST` |
+| No owner confirmation before each incremental slice | `SLICE-WALKTHROUGH.md` and per-screen confirmation |
+| Token cost and technical wording blocked adoption | `CORE-CARD.md` (≤2 KB) and `GLOSSARY.md` |
 
 ## 4. Architecture
 
@@ -58,12 +62,16 @@ ui-standards/
 ├─ skill/ui-standards/            ← the installable Agent Skill (single source of truth)
 │  ├─ SKILL.md                    entry: modes, procedure, precedence (short)
 │  └─ references/
+│     ├─ CORE-CARD.md             compact, owner-first rules loaded for every target
+│     ├─ PROFILES.md               target routing; local/web/hybrid boundaries
 │     ├─ PROCESS.md               phases, outputs, stack notes
 │     ├─ CORE.md                  floors + 5-state frame (always applied)
 │     ├─ ADVISOR.md               question bank for defining the app
 │     ├─ SLICES.md                slice contract: screen ↔ API ↔ data ↔ checks
-│     ├─ INDEX.md                 GENERATED trigger → code table
-│     ├─ templates/               COVERAGE.md, NEXT-ITERATION.md
+│     ├─ INDEX.md                 GENERATED full trigger → code table
+│     ├─ indexes/                  GENERATED target-specific retrieval maps
+│     ├─ templates/               coverage, next iteration, slice walkthrough
+│     ├─ tests/                    optional Python and JavaScript test starters
 │     ├─ frontend/                FE-* entries by family
 │     └─ backend/                 BE-* entries by family
 ├─ adapters/                      pointer snippets per tool
@@ -81,7 +89,9 @@ ui-standards/
 |---|---|---|
 | Adapter line in AGENTS.md / CLAUDE.md | every session | ≤ 6 lines |
 | `SKILL.md` | when UI/app-structure work starts | ≤ 150 lines |
-| `CORE.md`, `INDEX.md`, `PROCESS.md` | on skill activation | ≤ 250 lines each |
+| `CORE-CARD.md` | every activation | ≤ 2 KB |
+| `PROFILES.md`, one profile index, relevant process excerpts | selected by target | keep profile-specific |
+| `CORE.md` | only hosted/hybrid server slices | ≤ 250 lines |
 | Family files (`frontend/*`, `backend/*`) | only the families the INDEX matched | ≤ 400 lines each |
 
 ### Entry families
@@ -95,12 +105,16 @@ ui-standards/
 | FE-SEL | frontend/selection.md | single/multi-select, bulk actions, pickers |
 | FE-MEDIA | frontend/media.md | media preview list, player, image gallery, captions |
 | FE-ACCT | frontend/account.md | sign-up/in, reset, profile, settings, onboarding, account deletion |
+| FE-DESK | frontend/desktop.md | window lifecycle, native file dialogs, stoppable local tasks, shortcuts, copyable diagnostics |
+| FE-COST | frontend/metered-actions.md | estimates, second confirmation, dry run, budgets, no duplicate paid calls |
 | BE-API | backend/api.md | contract, errors, validation, pagination, idempotency, versioning |
 | BE-AUTH | backend/auth.md | authentication, sessions, roles/permissions, OAuth, password reset |
 | BE-DATA | backend/data.md | schema conventions, migrations, soft delete, audit log, backups, seed |
 | BE-FILE | backend/files.md | upload handling, storage, limits, signed URLs, media processing |
 | BE-JOB | backend/jobs.md | background jobs, scheduling, email, notifications, webhooks |
 | BE-OPS | backend/ops.md | config/secrets, logging, health, rate limiting, security headers, privacy export/delete |
+| BE-LOCAL | backend/local-first.md | local persistence, safe file operations, durable task ledger |
+| BE-COST | backend/metered-actions.md | paid-provider secrets, idempotency, reconciliation, cost ledger and limits |
 
 ### Entry format
 
@@ -110,13 +124,13 @@ Defined in [ENTRY-FORMAT.md](ENTRY-FORMAT.md) and enforced by `scripts/validate.
 
 | Phase | Agent does | Output in the app |
 |---|---|---|
-| 0 Detect | Read existing `docs/ui-standards/COVERAGE.md` if present; detect stack | — |
-| 1 Frame | Restate the app in plain words; ask ≤ 5 Advisor questions per round where answers are missing | Frame section of COVERAGE.md |
-| 2 Cast | Map every screen/slice to entry codes via INDEX; CORE always | Cast table |
-| 3 Cover | For each slice list Required + Conditional (built), Suggest (asked), Approval (blocked), Exclusions (with reason) | Cover table |
-| 4 Build | Implement slice by slice, front end and back end together | code |
-| 5 Gate | Check acceptance criteria; write tests where a test runner exists | ticked checklist |
-| 6 Advise | Report bill of conventions; write next-iteration list | NEXT-ITERATION.md |
+| 0 Detect | Resume existing coverage; identify stack and test runner | — |
+| 1 Target | Ask web / desktop / mobile / hybrid first; locate data and paid services | Target and Frame |
+| 2 Cast | Load CORE card and target index; match only relevant families | Cast table |
+| 3 Walk through | One owner-readable line per screen/slice: do → see → saved on failure; confirm before code | Walkthrough table |
+| 4 Cover | Required + true Conditional, Suggest, Approval, deliberate exclusions | Cover table |
+| 5 Build | One confirmed slice at a time; tests first; don't weaken existing tests | Code and tests |
+| 6 Gate and advise | Verify acceptance; report applied codes and next options | Gate + NEXT-ITERATION.md |
 
 Modes: **BUILD** (default when the user asks to build) runs 0–6. **ADVISE** (when the user
 is defining or asks "what am I missing") runs 0–3 and 6 with no code.

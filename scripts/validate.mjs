@@ -2,11 +2,13 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import {
     buildIndex,
+    buildProfileIndex,
     CODE_RE,
     field,
     INDEX_PATH,
     listMarkdown,
     parseEntries,
+    PROFILE_INDEXES,
     read, relPath,
     SKILL_DIR,
 } from './lib.mjs';
@@ -35,6 +37,10 @@ else {
   }
 }
 if (skill.split('\n').length > 150) err('SKILL.md', 'over 150 lines (budget in docs/BLUEPRINT.md)');
+
+const coreCardPath = join(SKILL_DIR, 'references', 'CORE-CARD.md');
+if (!existsSync(coreCardPath)) err('CORE-CARD.md', 'missing compact owner-first baseline');
+else if (Buffer.byteLength(read(coreCardPath), 'utf8') > 2048) err('CORE-CARD.md', 'over 2 KB');
 
 // Entries
 const entries = parseEntries();
@@ -84,10 +90,21 @@ const expected = buildIndex(entries);
 if (!existsSync(INDEX_PATH)) err('INDEX.md', 'missing — run node scripts/build-index.mjs');
 else if (read(INDEX_PATH) !== expected) err('INDEX.md', 'out of date — run node scripts/build-index.mjs');
 
+for (const profile of Object.keys(PROFILE_INDEXES)) {
+  const path = join(SKILL_DIR, 'references', 'indexes', `${profile}.md`);
+  const profileExpected = buildProfileIndex(entries, profile);
+  if (!existsSync(path)) err(relPath(path), 'missing — run node scripts/build-index.mjs');
+  else if (read(path) !== profileExpected) err(relPath(path), 'out of date — run node scripts/build-index.mjs');
+}
+
 // ADVISOR answers must map to real codes
 const advisorPath = join(SKILL_DIR, 'references', 'ADVISOR.md');
 read(advisorPath).split('\n').forEach((l, i) => {
   if (!/^\| Q\d+ /.test(l)) return;
+    if (/^\| Q0 /.test(l)) {
+      if (!l.includes('PROFILES.md')) err(`${relPath(advisorPath)}:${i + 1}`, 'Q0 must direct the agent to PROFILES.md');
+      return;
+    }
   const cells = l.split('|').map((c) => c.trim()).filter(Boolean);
   const activates = cells[cells.length - 1];
   if (!CODE_RE.test(activates) && !activates.includes('Approval-only')) {
@@ -97,7 +114,7 @@ read(advisorPath).split('\n').forEach((l, i) => {
 });
 
 // Size budgets (docs/BLUEPRINT.md § Loading model)
-const BUDGETS = { 'CORE.md': 250, 'INDEX.md': 250, 'PROCESS.md': 250 };
+const BUDGETS = { 'CORE.md': 250, 'INDEX.md': 250, 'PROCESS.md': 250, 'CORE-CARD.md': 80 };
 for (const file of listMarkdown(join(SKILL_DIR, 'references'))) {
   const n = read(file).split('\n').length;
   const name = relPath(file).split('/').pop();

@@ -11,7 +11,7 @@ Load when the app plays, shows, records or captures audio, video or images.
 
 **Required**
 - R1 Only one item plays at a time: starting one pauses or stops any other, including players elsewhere in the app; nothing autoplays on load, scroll or hover (CORE F7).
-- R2 Each item's play control is a button named for the item ("Play Intro.mp3") whose name changes with state ("Pause Intro.mp3"); the state (idle, loading, playing, paused, ended, error) shows as icon plus text, not colour alone.
+- R2 Each item's control is named for the item ("Play Intro.mp3"); it changes to Pause for long-form playback or Stop for a short preview, with state shown as icon plus text, not colour alone.
 - R3 Each row shows its duration; the active row shows position and a keyboard-operable seek slider with time as text (WAI-ARIA APG Slider).
 - R4 Playing state comes from one source and is reflected everywhere the item appears (row, mini player, detail); re-sorting, filtering or paging the list never resets playback or shows the wrong state.
 - R5 A failed item shows an error with Retry on that row and does not block others; loading shows a state, never silence (CORE F4); the list loads metadata only until play is pressed.
@@ -22,6 +22,7 @@ Load when the app plays, shows, records or captures audio, video or images.
 - C2 IF the tab is hidden or the screen locks THEN audio may continue and operating-system media controls show title and Play or Pause (Media Session); video pauses.
 - C3 IF a queue or playlist exists THEN the current track is marked and "play next" is an explicit setting.
 - C4 IF thumbnails or waveforms animate THEN they are static under reduced motion (CORE F7).
+- C5 IF items are short previews THEN the active control says Stop and returns the item to idle; long-form playback uses Pause so the owner can resume.
 
 **Suggest**
 - S1 A mini player that stays visible across screens — lets people keep listening while they browse.

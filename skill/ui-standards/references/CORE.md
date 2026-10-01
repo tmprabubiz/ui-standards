@@ -1,7 +1,8 @@
 # CORE — always applied
 
-CORE applies to every screen and every endpoint, whether or not an entry matched. Floors
-cannot be declined by default; overriding one needs a written exception in COVERAGE.md.
+Load full CORE for hosted web and hybrid slices. `CORE-CARD.md` applies to every target;
+these additional server floors apply only where the feature exists. Floors cannot be
+declined by default; overriding an applicable floor needs a written exception in COVERAGE.md.
 
 ## Floors
 
@@ -19,7 +20,7 @@ cannot be declined by default; overriding one needs a written exception in COVER
 | F8 | User input is never lost by navigation, refresh or a failed submit without a warning. |
 | F9 | Layout works from 320 px wide to desktop; touch targets are at least 24 × 24 CSS px. |
 
-### Back end
+### Hosted back end
 
 | ID | Floor |
 |---|---|

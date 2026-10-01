@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 — 2026-10-01
+
+- Added target-first routing and generated web/desktop indexes; local single-user apps no longer load account or hosted-API families by default.
+- Added FE-DESK, FE-COST, BE-LOCAL and BE-COST families for desktop workflows, local data safety and paid/metered operations.
+- Added compact CORE card, screen/slice walkthrough, plain-word glossary, and optional Python/JavaScript test starters.
+- Updated test-first guidance; explicitly prohibit weakening existing tests.
+- Added required provider-option gating, paid-call ledger/reconciliation, desktop task closeout, copyable diagnostics and preview Stop behaviour.
+
 ## 1.1.0 — 2026-10-01
 
 Fixes found by running the skill on a real planning task (see `evals/2026-10-plan-comparison`).

@@ -22,7 +22,8 @@ a select-all box with a "some selected" state, undo after delete, a "no results"
 a password reset that doesn't reveal who has an account, files kept private by default.
 If you're not a developer, you only notice once the app is in use.
 
-`ui-standards` turns those conventions into **77 numbered parts** across 13 families. For
+`ui-standards` turns those conventions into **87 numbered parts** across 17 families,
+including an installed-desktop and local-first profile. For
 each one, your agent knows:
 
 | Level | What the agent does |
@@ -32,8 +33,9 @@ each one, your agent knows:
 | **Suggest** | Asks you, or adds it to `NEXT-ITERATION.md` |
 | **Approval** | Never builds it without your explicit yes (costs, legal, permanent loss) |
 
-There is also an always-on **CORE**: 16 safety, data and accessibility floors, plus a
-5-state rule (loading, empty, error, no-permission, partial) for every screen.
+There is also a compact, owner-readable **CORE card** loaded first. The full 16-floor
+security/accessibility baseline loads only for profiles and slices where it applies, so a
+single-user local desktop tool is not burdened with accounts or hosted APIs.
 
 ## Does it work?
 
@@ -48,6 +50,8 @@ model against 30 conventions fixed in advance:
 The gains come from the catalogue entries the agent loads during the build; the coverage
 sheet's own text is not more complete. Method, limitations and every score:
 [evals/2026-10-plan-comparison](evals/2026-10-plan-comparison/README.md).
+Those runs evaluated v1.1; the desktop/local-first and metered-call additions in v1.2 have
+not yet been evaluated.
 See a real output: [examples/field-recordings](examples/field-recordings/).
 
 ## What it covers
@@ -60,7 +64,12 @@ See a real output: [examples/field-recordings](examples/field-recordings/).
 | Tables, lists, search, filters, pagination, detail views, dashboards | Upload limits, private storage, media processing, resumable uploads |
 | Multi-select and bulk actions, single choice, pickers, reorder | Background jobs, schedules, email, notifications, webhooks in and out |
 | Media lists, players, galleries, recording | Secrets, logging, health checks, rate limits, browser security, privacy export and erasure, environments |
+| Desktop windows, local file pickers, stoppable tasks, keyboard shortcuts, copyable errors | Local persistence, safe file operations, durable task ledger |
 | Sign up and sign in, reset, profile, onboarding, delete account, team members | |
+
+Paid or quota-limited calls (for example, transcription or AI generation) have a separate
+confirm-and-ledger contract: estimate, a second cost-labelled action, duplicate prevention,
+dry run where available, and recovery after an unknown result.
 
 Full list: [skill/ui-standards/references/INDEX.md](skill/ui-standards/references/INDEX.md)
 
@@ -110,6 +119,7 @@ Ask your agent in plain words:
 | You say | What happens |
 |---|---|
 | "Use ui-standards to plan my app: a library of my field recordings with previews and tags." | **ADVISE** mode: a few multiple-choice questions, a coverage sheet, a next-iteration list. No code. |
+| "Plan a one-user desktop app that uses paid transcription." | Asks target and data-location questions first; loads only desktop/local and metered-call rules, not account/API boilerplate. |
 | "Build the recordings list screen." | **BUILD** mode: maps your request to parts, builds the required ones front end and back end, checks them, and reports which conventions it applied. |
 | "What is this app missing?" | Reviews the app against the catalogue and updates `NEXT-ITERATION.md`. |
 | "Build next-iteration items 1, 3 and 4." | Builds exactly those. |

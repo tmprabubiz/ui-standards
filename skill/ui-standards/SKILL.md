@@ -4,7 +4,7 @@ description: Standard-parts catalogue for app front ends and back ends. Use when
 license: MIT
 compatibility: Any agent that reads Agent Skills (Claude Code, Codex, Copilot, Cursor). No runtime dependencies.
 metadata:
-  version: "1.1.0"
+   version: "1.2.0"
   repository: "https://github.com/tmprabubiz/ui-standards"
 ---
 
@@ -29,27 +29,34 @@ If unclear, use ADVISE first, then offer to build.
 
 0. **Detect.** If `docs/ui-standards/COVERAGE.md` exists in the app, read it and continue
    from it. Note the stack and any component library already in use.
-1. **Frame.** Restate the app or feature in 3–6 plain lines: who uses it, the main screens,
-   what data it keeps. If key facts are missing, ask questions from
-   [ADVISOR.md](references/ADVISOR.md) — at most 5 per round, multiple choice, with a
-   recommended default.
-2. **Cast.** Load [CORE.md](references/CORE.md) and [INDEX.md](references/INDEX.md). Match the
-   request to entry codes using the trigger words. Load **only** the family files those codes
-   live in. Compose entries; do not invent behaviour an entry already defines.
-3. **Cover.** Fill [templates/COVERAGE.md](references/templates/COVERAGE.md) into the app at
-   `docs/ui-standards/COVERAGE.md`: per slice, the codes used, Required + Conditional items
-   that will be built, Suggest items to ask about, Approval items blocked, and exclusions with
-   a reason. Slices follow [SLICES.md](references/SLICES.md).
-4. **Build** (BUILD mode only). Implement one slice at a time, front end and back end
-   together. Use the project's existing libraries first.
-5. **Gate** (BUILD mode only). Check every Acceptance item for the slice. Where a test runner
-   exists, turn them into tests. Tick the coverage sheet only for what was verified.
+1. **Target first.** Read [CORE-CARD.md](references/CORE-CARD.md) and
+   [PROFILES.md](references/PROFILES.md). Ask which kind of app this is before asking about
+   accounts or web features. Use the owner's stated target and workflow; never default a
+   desktop or local-first app to web.
+2. **Frame.** Restate the app in 3–6 plain lines: target, who uses it, screens, data location,
+   and outside services. Ask only relevant questions from [ADVISOR.md](references/ADVISOR.md),
+   at most 5 per round. Pair unfamiliar terms with their plain meaning from
+   [GLOSSARY.md](references/GLOSSARY.md).
+3. **Cast.** Load the chosen profile index (`references/indexes/<profile>.md`) and match
+   trigger words. For hybrid apps, use the desktop index for local slices and the web index
+   only for networked slices. Load only matched family files. Do not load accounts, APIs or
+   hosted services unless a slice needs them. Compose entries; do not invent behaviour already defined.
+4. **Cover and walkthrough.** Fill [templates/COVERAGE.md](references/templates/COVERAGE.md)
+   at `docs/ui-standards/COVERAGE.md`. Before code, show the owner one line per screen or
+   slice: what they do, what they see, and what is saved if it fails. Use
+   [templates/SLICE-WALKTHROUGH.md](references/templates/SLICE-WALKTHROUGH.md); wait for
+   confirmation of each slice. Slices follow [SLICES.md](references/SLICES.md).
+5. **Build** (BUILD mode only). Work one confirmed slice at a time. Read existing tests,
+   write/update the acceptance test first, then implement. Never remove or weaken a failing
+   test to make a change pass. Use the project's existing stack and libraries.
+6. **Gate** (BUILD mode only). Check every Acceptance item. Tick only what was verified.
 6. **Advise.** Report a short **bill of conventions** (codes applied, exclusions). Write or
    update `docs/ui-standards/NEXT-ITERATION.md` from
    [templates/NEXT-ITERATION.md](references/templates/NEXT-ITERATION.md) with the Suggest and
    Approval items not built, in plain English, each with benefit and effort (S/M/L).
 
-Full detail: [PROCESS.md](references/PROCESS.md).
+Full detail: [PROCESS.md](references/PROCESS.md). Test examples: load only the relevant
+language file in `references/tests/` when useful.
 
 ## Precedence
 

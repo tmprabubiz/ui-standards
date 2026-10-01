@@ -37,25 +37,39 @@ Recognition guard: match on what the user is trying to do, not on a stray word. 
 plan" in pricing is a single choice, not multi-select.
 
 ## Phase 3 · Cover
+## Phase 1 · Target and frame
 
-Fill COVERAGE.md. For each slice and each code:
+Ask target before feature questions: **web, installed desktop, mobile app, hybrid, or
+something else?** Read `PROFILES.md`; do not assume browser/server conventions for a desktop
+tool. Then ask where data lives (device, hosted service, both) and whether outside services
+charge per use. One user with local files does not imply accounts or a hosted API.
+Target: <web / desktop / mobile / hybrid / other>
+Data location: <local / hosted / both>
 
+Paid or metered services: <name and what action uses them / none>
 - **Build:** every Required item, plus each Conditional item whose IF is true.
-- **Ask:** Suggest items. Group them; ask at most 5 per round. Unanswered → NEXT-ITERATION.md.
-- **Blocked:** Approval items, unless the user has said yes in this conversation.
-- **Excluded:** anything skipped, with a reason in one line.
+2. Load only the target's profile index (`indexes/web.md` or `indexes/desktop.md`).
+   For an uncatalogued target, use shared families only and stay in ADVISE mode.
+3. Scan trigger words against each slice description.
+4. Add entries that matched entries list in **Composes**.
+5. Add accounts, hosted APIs and sharing only for slices that need them.
+6. Load only the family files that contain the cast codes.
+Show the owner a short summary before building: target, slices, what will be built, questions.
+Then fill `SLICE-WALKTHROUGH.md` with one plain line per slice: **I do → I see → saved if
+it fails**. Wait for the owner's confirmation of each slice; unconfirmed slices stay unbuilt.
 
-Show the owner a short summary before building: slices, what will be built, questions.
-
-## Phase 4 · Build
-
-- One slice at a time: data → API → screen → states.
-- Back end first enough that the screen calls a real contract, even if stubbed.
-- Prefer the project's existing component library. If none, use an accessible headless
+- One confirmed slice at a time. For a networked app: data → API → screen → states. For
+  desktop/local-first: local persistence → operation → screen → recovery states; do not invent
+  an API layer.
+- Read existing tests and write/update the acceptance test before implementation. Never
+  delete or weaken a failing test to get a pass; report the failure and fix the behaviour.
+- For Python, optionally load `tests/python.md`; for JavaScript/TypeScript, optionally load
+  `tests/javascript.md`. Use the project's existing test framework.
   library suited to the stack:
-
 | Stack | Typical accessible base |
 |---|---|
+- Every paid or metered call is verified for cost disclosure, duplicate prevention and
+  outcome-unknown recovery before the slice is marked done.
 | React / Next.js | Radix UI or React Aria (shadcn/ui builds on Radix) |
 | Vue / Nuxt | Reka UI |
 | Svelte | Bits UI / Melt UI |
