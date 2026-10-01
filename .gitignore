@@ -6,3 +6,6 @@ Research/
 Thumbs.db
 .vscode/
 *.tmp
+
+# Local launch drafts (posted manually by the owner)
+launch/

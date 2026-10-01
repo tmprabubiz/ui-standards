@@ -34,6 +34,15 @@ Assumptions (defaults taken):
 |---|---|---|---|---|---|
 | S1 | FE-… | R1–R5, C2 | S1, S3 | A1 | C1 — single page only |
 
+Gate a code once, under the first slice that uses it; later slices reference it.
+
+## Not cast
+
+Entries considered and left out of this app, so the omission is deliberate.
+
+| Code | Reason |
+|---|---|
+
 ## Floor exceptions
 
 | Floor | Slice | Decision | Reason | Approved by |

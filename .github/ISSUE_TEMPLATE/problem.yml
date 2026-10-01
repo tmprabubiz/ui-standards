@@ -1,0 +1,23 @@
+name: Problem with an entry or installer
+description: Wrong guidance, a contradiction, or an install problem.
+labels: ["bug"]
+body:
+  - type: input
+    id: code
+    attributes:
+      label: Entry code or file
+      placeholder: "BE-AUTH-01, or install/install.ps1"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong?
+      description: Include the standard or source that says otherwise, if you know it.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps or command output (for install problems)
+      render: text

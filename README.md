@@ -1,5 +1,10 @@
 # ui-standards
 
+[![validate](https://github.com/tmprabubiz/ui-standards/actions/workflows/validate.yml/badge.svg)](https://github.com/tmprabubiz/ui-standards/actions/workflows/validate.yml)
+[![release](https://img.shields.io/github/v/release/tmprabubiz/ui-standards)](https://github.com/tmprabubiz/ui-standards/releases)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6f42c1)](https://agentskills.io)
+
 **A standard-parts catalogue for AI-built apps.** It gives your coding agent a list of
 conventional behaviours, so you don't have to ask for them one by one. It covers the front
 end and the back end. Anything optional it asks you about first, and it keeps a plain-English
@@ -29,6 +34,21 @@ each one, your agent knows:
 
 There is also an always-on **CORE**: 16 safety, data and accessibility floors, plus a
 5-state rule (loading, empty, error, no-permission, partial) for every screen.
+
+## Does it work?
+
+Same app idea, same model, planned with and without the skill, graded blind by a different
+model against 30 conventions fixed in advance:
+
+| | Without | With (entries applied) |
+|---|---|---|
+| Run 1 | 21 / 30 | **28 / 30** |
+| Run 2 | 20 / 30 | **27 / 30** |
+
+The gains come from the catalogue entries the agent loads during the build; the coverage
+sheet's own text is not more complete. Method, limitations and every score:
+[evals/2026-10-plan-comparison](evals/2026-10-plan-comparison/README.md).
+See a real output: [examples/field-recordings](examples/field-recordings/).
 
 ## What it covers
 

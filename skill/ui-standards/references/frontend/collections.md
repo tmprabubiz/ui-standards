@@ -181,7 +181,7 @@ Load for screens that show many records or one record in depth: tables, lists, g
 **Composes:** FE-COLL-01, FE-COLL-02, FE-SHELL-02, BE-API-04
 
 **Required**
-- R1 Collections over 50 items are never loaded in full (CORE D3); use numbered pages for tables and search results, and a "Load more" button for card lists and feeds.
+- R1 Collections over 50 items are never loaded in full (CORE D3); use numbered pages for tables, and a "Load more" button for card lists and feeds; searching a list keeps that list's own style.
 - R2 Pagination sits in a labelled navigation landmark with Previous, Next and page numbers; the current page is marked; Previous is disabled on the first page.
 - R3 The position is shown ("Showing 26–50 of 240") and the page is in the address (FE-SHELL-02); changing page moves focus to the results heading and scrolls to the top.
 - R4 "Load more" adds items below without moving focus or scroll, announces "25 more loaded" politely, shows busy, and on failure keeps what is loaded and offers retry.

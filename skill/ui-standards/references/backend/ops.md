@@ -248,7 +248,7 @@ How the app is configured, observed, protected and deployed: secrets, logs, heal
 - S3 Let users correct their own data in settings — the simplest answer to rectification requests.
 
 **Approval**
-- A1 Hard-deleting a person's data (irreversible).
+- A1 Erasing immediately with no grace period, or keeping a person's data after erasure for any reason other than R7.
 - A2 Setting retention periods that touch legal duties.
 - A3 Sending personal data to a third party or another country.
 - A4 Third-party analytics or advertising that tracks people.

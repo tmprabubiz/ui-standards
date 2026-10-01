@@ -13,7 +13,7 @@ Load when the app has user accounts: sign up and in, recovery, profile and setti
 - R1 Ask only what is needed to start (email and password, or social sign-in); anything else is asked later (FE-ACCT-05).
 - R2 The email field uses the email input kind and the username autocomplete purpose; the password field uses the new-password purpose so password managers offer to generate and save; pasting is allowed (WCAG 2.2 SC 3.3.8).
 - R3 A show-or-hide toggle on the password field is a named button whose state is announced, hidden by default; the rules are stated before typing and match the server: a minimum length of 15 characters (8 when a second factor is always required), long passphrases (64 or more) accepted, no forced mix of symbols, and common or breached passwords refused (NIST SP 800-63B Rev. 4).
-- R4 Errors follow FE-FORM-02; the "email already registered" case offers Sign in and Reset password links.
+- R4 Errors follow FE-FORM-02; unless C1 applies, the "email already registered" case offers Sign in and Reset password links.
 - R5 Terms and privacy are linked next to the submit button; the submit shows busy and blocks repeats (CORE F6).
 - R6 After success the user lands on verify-email (FE-ACCT-03) or onboarding (FE-ACCT-05) with focus on the heading; an "Already have an account? Sign in" link is always present.
 

@@ -4,6 +4,11 @@ Use in Phase 1 (missing facts) and Phase 6 (next iteration). Ask at most 5 per r
 multiple choice, with the recommended default marked. Skip any question the owner has
 already answered or that does not change the build.
 
+**The owner's brief always wins.** Infer answers from what they described before using a
+default. A default is the safe choice only when the brief says nothing. Examples: a
+library of recordings implies hundreds of items (Q6) and acting on many at once (Q7);
+"share with my editor" implies Q9 sharing.
+
 Format each question as:
 
 ```

@@ -1,0 +1,42 @@
+name: Missing convention
+description: Your AI agent left out behaviour you expected. No coding needed.
+title: "Missing: "
+labels: ["gap"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! Describe it in plain words. Every report helps the next app.
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect the app to do?
+      placeholder: "When I deleted a recording I expected an Undo button for a few seconds."
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened instead?
+      placeholder: "It was deleted immediately with no way back."
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Which screen or feature?
+      placeholder: "Recordings list, delete button"
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Which agent built it?
+      options: [Claude Code, Codex, GitHub Copilot, Cursor, Other]
+  - type: dropdown
+    id: installed
+    attributes:
+      label: Was ui-standards installed?
+      options: ["Yes", "No", "Not sure"]
+  - type: input
+    id: example
+    attributes:
+      label: An app or website that does this well (optional)

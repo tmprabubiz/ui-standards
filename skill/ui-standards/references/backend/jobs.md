@@ -72,7 +72,7 @@ Work that happens outside a single request: background jobs, schedules, email, n
 - S2 A "run now" button for administrators — helps with testing and recovery.
 
 **Approval**
-- A1 Tasks that email, charge or delete automatically in bulk.
+- A1 New tasks that email, charge or delete automatically in bulk, beyond those another entry already requires (such as the BE-DATA-03 purge).
 - A2 Adding a paid scheduler service.
 
 **Frontend contract**

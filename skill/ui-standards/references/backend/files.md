@@ -28,7 +28,7 @@ How uploaded files are accepted, stored, served and processed. Load for any app 
 - S2 Storage used per user shown in settings — avoids surprise limits.
 
 **Approval**
-- A1 Raising the size limit above the default (default 25 MB; costs storage and bandwidth).
+- A1 Raising size limits above the defaults (25 MB for images and documents; 2 GB for audio and video, which also needs BE-FILE-04) — costs storage and bandwidth.
 - A2 Accepting executables, archives or scriptable formats.
 - A3 Paid scanning or storage services.
 

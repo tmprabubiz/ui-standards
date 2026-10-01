@@ -69,7 +69,7 @@ Load whenever an action needs confirming, undoing, reporting, or showing progres
 
 **Approval**
 - A1 Permanent deletion with no undo and no recovery bin — data cannot come back.
-- A2 Automatic permanent purge of deleted items after a set period — confirm how long the owner wants to keep them.
+- A2 Changing the recovery period from the default 30 days, or turning off the automatic purge — affects storage cost and how long deleted data is kept.
 
 **Backend contract**
 - Delete is a soft delete with a restore operation and a scheduled purge (BE-DATA-03); restore and delete are safe to repeat (BE-API-06).

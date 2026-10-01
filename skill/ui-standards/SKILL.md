@@ -4,7 +4,7 @@ description: Standard-parts catalogue for app front ends and back ends. Use when
 license: MIT
 compatibility: Any agent that reads Agent Skills (Claude Code, Codex, Copilot, Cursor). No runtime dependencies.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   repository: "https://github.com/tmprabubiz/ui-standards"
 ---
 
@@ -61,6 +61,10 @@ Full detail: [PROCESS.md](references/PROCESS.md).
 
 A user may decline anything except a floor. Overriding a floor needs a written exception
 in COVERAGE.md with the reason.
+
+Approval gates a **choice**, not a Required behaviour. When a Required item depends on an
+Approval item (e.g. reset emails need an email provider), build the Required behaviour
+behind a named setting or stub and list the choice under "Needs your decision".
 
 ## Rules that hold for the whole task
 

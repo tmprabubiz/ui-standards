@@ -141,7 +141,7 @@ How data is shaped, changed, kept safe and found again: schema, migrations, reco
 
 **Required**
 - R1 Important actions write an audit entry: sign-in and failures, password or email change, role or permission change, share and invite, key creation, export, delete and restore, settings changes.
-- R2 Each entry holds actor, action, target type and id, time (UTC), request id, and the source address; it records what changed without secrets, passwords or whole documents.
+- R2 Each entry holds actor, action, target type and id, time (UTC) and request id; it records what changed without secrets, passwords or whole documents. Source address and device details are added only when A1 is approved.
 - R3 The audit log is append-only for the app: no edit or delete endpoint exists, and database write permission for the app is limited accordingly.
 - R4 Audit entries are written in the same step as the action, so an action without a record cannot happen.
 - R5 Only permitted roles can read audit entries, and only for their own organisation (CORE F11); the log is searchable by actor, action and date with paging (BE-API-04).

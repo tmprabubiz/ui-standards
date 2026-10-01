@@ -69,10 +69,10 @@ Load when the app plays, shows, records or captures audio, video or images.
 **Suggest**
 - S1 Playback speed — helps people who listen faster or slower.
 - S2 Preview thumbnails while scrubbing video — makes finding a moment easier.
-- S3 A download button — lets people keep a copy.
+- S3 A download button for the original file, shown to its owner — lets people keep a copy.
 
 **Approval**
-- A1 Allowing downloads of media owned by others — raises copyright and permission questions.
+- A1 Letting people other than the owner download the original (for example a shared editor) — raises copyright and permission questions.
 
 **Backend contract**
 - Media is served from access-controlled addresses with range requests (BE-FILE-02) in browser-playable formats (BE-FILE-03); caption files are stored with the media.
