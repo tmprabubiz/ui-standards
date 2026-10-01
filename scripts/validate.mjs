@@ -97,21 +97,11 @@ for (const profile of Object.keys(PROFILE_INDEXES)) {
   else if (read(path) !== profileExpected) err(relPath(path), 'out of date — run node scripts/build-index.mjs');
 }
 
-// ADVISOR answers must map to real codes
-const advisorPath = join(SKILL_DIR, 'references', 'ADVISOR.md');
-read(advisorPath).split('\n').forEach((l, i) => {
-  if (!/^\| Q\d+ /.test(l)) return;
-    if (/^\| Q0 /.test(l)) {
-      if (!l.includes('PROFILES.md')) err(`${relPath(advisorPath)}:${i + 1}`, 'Q0 must direct the agent to PROFILES.md');
-      return;
-    }
-  const cells = l.split('|').map((c) => c.trim()).filter(Boolean);
-  const activates = cells[cells.length - 1];
-  if (!CODE_RE.test(activates) && !activates.includes('Approval-only')) {
-    err(`${relPath(advisorPath)}:${i + 1}`, 'Activates cell needs entry codes or "Approval-only"');
+for (const required of ['ADVISOR.md', 'PROFILES.md', 'CAPABILITIES.md', 'BUILD-ENVIRONMENTS.md']) {
+  if (!existsSync(join(SKILL_DIR, 'references', required))) {
+    err(required, 'required context-first discovery reference is missing');
   }
-  CODE_RE.lastIndex = 0;
-});
+}
 
 // Size budgets (docs/BLUEPRINT.md § Loading model)
 const BUDGETS = { 'CORE.md': 250, 'INDEX.md': 250, 'PROCESS.md': 250, 'CORE-CARD.md': 80 };

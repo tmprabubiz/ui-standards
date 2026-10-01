@@ -1,28 +1,27 @@
 # CORE card
 
-Start here for every app. Ask **target first**: web, desktop, mobile, or hybrid. Load only
-that profile's index and matched families. For a target without a profile, advise and ask
-before assuming web conventions.
+Start with the owner's goal in their own words. Profiles and families are retrieval aids,
+not a closed list. If nothing fits, clarify the need and record the gap.
 
 - **Before a slice:** show one walkthrough line: what the owner does, what they see, and
   what is saved if it fails. Get confirmation before code.
-- **Build:** use the existing stack; tests first. Read existing tests, write or update the
-  acceptance test, then implement. Never remove or weaken a failing test to make the change pass.
-- **States:** loading (working), empty (nothing here yet), error (could not finish),
-  unavailable (cannot use this now), and partial (some worked, some did not). Every long
-  task says what is happening and shows progress when measurable.
+- **Build:** use the existing stack; read existing tests, write/update the acceptance test,
+  then implement. Never remove or weaken a failing test.
+- **States:** loading (working), empty (nothing yet), error (could not finish), unavailable
+  (can't use now), partial (some worked). Long tasks explain progress.
 - **Access:** keyboard users can reach every action; focus is visible; controls have names;
   meaning is not colour alone.
-- **Safety:** validate input; keep secrets out of code and logs; never repeat a paid or
-  destructive action without checking whether it already happened.
-- **Owner language:** pair unfamiliar terms with a short plain-English meaning the first
-  time. Messages wrap; errors can be copied with their request or task id when available.
+- **Safety:** validate input, protect secrets, and check before repeating paid or destructive
+  actions.
+- **Owner language:** explain new terms simply; wrap messages; let users copy errors and IDs.
 - **Scope:** Required is built; Conditional only if true; Suggest is asked or saved for
   later; Approval needs an explicit yes. Record exclusions in the coverage sheet.
 
-A desktop app with one user and local files does **not** need accounts, passwords, web APIs,
-or sharing links unless the owner asks for them. A paid or metered external call is a separate
-high-risk action; load its UI and persistence contracts before implementing it.
+A one-user local app needs no accounts or hosted API unless asked. Paid calls need cost and
+duplicate-run safeguards.
 
-For server-specific rules, load CORE.md only for a hosted or hybrid slice. For target
-routing, see PROFILES.md.
+Assess build machine separately from app runtime. Remote builds/GPU add source, credential
+and billing decisions; see BUILD-ENVIRONMENTS.md.
+
+For server-specific rules, load CORE.md only for a hosted or hybrid slice. For routing, see
+PROFILES.md and CAPABILITIES.md.

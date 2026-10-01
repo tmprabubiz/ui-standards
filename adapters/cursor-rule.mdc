@@ -1,8 +1,8 @@
 ---
-description: Standard-parts catalogue for app screens, features, APIs, data and accounts. Use when planning, building or extending app features, or when asked what the app is missing.
+description: Context-first guide for any app idea, feature, domain workflow, build-machine constraint, remote build, cloud resource or deployment. Use for planning, building, or asking what is missing.
 alwaysApply: false
 ---
 
-Read and follow `.agents/skills/ui-standards/SKILL.md`.
+Read and follow `.agents/skills/ui-standards/SKILL.md`; discover the owner's context before matching catalogue patterns.
 Keep `docs/ui-standards/COVERAGE.md` and `docs/ui-standards/NEXT-ITERATION.md` current.
 When the owner asks "what am I missing" or "what next", use the skill in ADVISE mode.

@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.3.0 — 2026-10-01
+
+- Reframed the skill as context-first guidance for any app/domain; examples and profiles are retrieval aids, not a closed taxonomy.
+- Replaced the fixed feature questionnaire with open-ended discovery across user goal, domain, data/rights, runtime, build host, deployment, outside services and cost.
+- Added open-world capability routing and an explicit uncatalogued-needs path; unknown requirements are written into coverage and next iteration instead of forced into a nearby code.
+- Added remote build/cloud-environment guidance for machines without local Docker, virtualization or GPUs, plus provider-neutral AWS/GCP service examples.
+- Added AI/media, source-grounded knowledge, cloud resource, remote image build and deployment patterns.
+- Rewrote PROCESS.md into one ordered context-to-verified-slices workflow.
+- Reframed the README plan comparison as one bounded field-recordings planning case study, not general proof of coverage.
+- Audited all 19 local research reports into 27 observable UI behavior checks; identified live collaboration and offline sync as partial/open.
+- Ran six fresh-context ADVISE probes across distinct app/build contexts; a cloud composition miss led to explicit transitive `Composes` resolution.
+- Added evaluation limits: planning/traceability checks do not prove generated apps work.
+
 ## 1.2.0 — 2026-10-01
 
 - Added target-first routing and generated web/desktop indexes; local single-user apps no longer load account or hosted-API families by default.

@@ -5,10 +5,10 @@
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-compatible-6f42c1)](https://agentskills.io)
 
-**A standard-parts catalogue for AI-built apps.** It gives your coding agent a list of
-conventional behaviours, so you don't have to ask for them one by one. It covers the front
-end and the back end. Anything optional it asks you about first, and it keeps a plain-English
-list of what to build next.
+**Context-first guidance for building any kind of app with an AI coding agent.** Describe
+your goal, users, unusual needs and constraints in your own words. The agent checks what
+applies, uses known patterns where they fit, asks about consequential unknowns, and records
+anything the catalogue does not cover. It does not force your idea into a preset app category.
 
 Works with **Claude Code** and **Codex**, and with any agent that reads
 [Agent Skills](https://agentskills.io) or `AGENTS.md` (GitHub Copilot, Cursor and others).
@@ -22,9 +22,11 @@ a select-all box with a "some selected" state, undo after delete, a "no results"
 a password reset that doesn't reveal who has an account, files kept private by default.
 If you're not a developer, you only notice once the app is in use.
 
-`ui-standards` turns those conventions into **87 numbered parts** across 17 families,
-including an installed-desktop and local-first profile. For
-each one, your agent knows:
+The catalogue currently contains **97 reusable behavior patterns** across 24 families,
+plus context discovery, runtime/build profiles, cloud build guidance, test-first workflow
+and owner-readable coverage templates. These patterns are examples from which the agent
+composes only what your project needs; they are not an exhaustive list of app types. Each
+entry classifies its guidance as:
 
 | Level | What the agent does |
 |---|---|
@@ -37,7 +39,7 @@ There is also a compact, owner-readable **CORE card** loaded first. The full 16-
 security/accessibility baseline loads only for profiles and slices where it applies, so a
 single-user local desktop tool is not burdened with accounts or hosted APIs.
 
-## Does it work?
+## One bounded case study (not general proof)
 
 Same app idea, same model, planned with and without the skill, graded blind by a different
 model against 30 conventions fixed in advance:
@@ -47,12 +49,27 @@ model against 30 conventions fixed in advance:
 | Run 1 | 21 / 30 | **28 / 30** |
 | Run 2 | 20 / 30 | **27 / 30** |
 
-The gains come from the catalogue entries the agent loads during the build; the coverage
-sheet's own text is not more complete. Method, limitations and every score:
+This is one field-recordings **planning** comparison, not evidence for every domain or a
+built-app outcome. The gains in that case came from the catalogue entries the agent loaded;
+the coverage sheet's own text was not more complete. Method, limitations and every score:
 [evals/2026-10-plan-comparison](evals/2026-10-plan-comparison/README.md).
-Those runs evaluated v1.1; the desktop/local-first and metered-call additions in v1.2 have
-not yet been evaluated.
-See a real output: [examples/field-recordings](examples/field-recordings/).
+Those runs evaluated v1.1, not the later desktop/cloud additions. The
+[field-recordings output](examples/field-recordings/) is illustrative only, not the canonical
+project shape.
+
+## Research and planning checks
+
+The 19 local research reports were deduplicated into 27 observable UI behavior checks.
+Traceability review found 24 with Required/Conditional coverage, one intentionally mixed
+with Suggest behavior, and two partial/open areas: live collaboration and offline sync.
+Six fresh-context planning probes across unlike app and build scenarios scored 7–8/8 against
+a frozen checklist. One probe exposed a missing transitive `Composes` instruction; that was
+fixed and the same scenario rerun.
+
+These are **catalogue traceability and ADVISE-planning checks**, not tests of built apps or
+proof for every domain. No cloud infrastructure or paid model calls were used. Detailed
+method, coverage rows, probe scores and remaining gaps:
+[evals/research-coverage](evals/research-coverage/RESULTS.md).
 
 ## What it covers
 
@@ -65,9 +82,13 @@ See a real output: [examples/field-recordings](examples/field-recordings/).
 | Multi-select and bulk actions, single choice, pickers, reorder | Background jobs, schedules, email, notifications, webhooks in and out |
 | Media lists, players, galleries, recording | Secrets, logging, health checks, rate limits, browser security, privacy export and erasure, environments |
 | Desktop windows, local file pickers, stoppable tasks, keyboard shortcuts, copyable errors | Local persistence, safe file operations, durable task ledger |
+| AI-generated content, source-grounded knowledge answers, cloud resource controls | Model integrations, cloud accounts/compute, remote builds, deployment/rollback |
 | Sign up and sign in, reset, profile, onboarding, delete account, team members | |
 
-Paid or quota-limited calls (for example, transcription or AI generation) have a separate
+Examples above are capability patterns, not a complete domain checklist. An unfamiliar app
+can combine them, use different patterns, or add uncatalogued behavior.
+
+Paid or quota-limited calls have a separate
 confirm-and-ledger contract: estimate, a second cost-labelled action, duplicate prevention,
 dry run where available, and recovery after an unknown result.
 
@@ -118,8 +139,8 @@ Ask your agent in plain words:
 
 | You say | What happens |
 |---|---|
-| "Use ui-standards to plan my app: a library of my field recordings with previews and tags." | **ADVISE** mode: a few multiple-choice questions, a coverage sheet, a next-iteration list. No code. |
-| "Plan a one-user desktop app that uses paid transcription." | Asks target and data-location questions first; loads only desktop/local and metered-call rules, not account/API boilerplate. |
+| "I want to build an app that helps [person] do [goal]. The unusual part is [context]." | Starts with your goal and context, then asks only consequential questions and produces a coverage sheet and next-iteration list. No code in ADVISE mode. |
+| "My computer can't run Docker or virtualization; I need to deploy a GPU service." | Separately assesses build machine, remote builder, cloud runtime, account, data, quota and cost constraints before proposing a path. |
 | "Build the recordings list screen." | **BUILD** mode: maps your request to parts, builds the required ones front end and back end, checks them, and reports which conventions it applied. |
 | "What is this app missing?" | Reviews the app against the catalogue and updates `NEXT-ITERATION.md`. |
 | "Build next-iteration items 1, 3 and 4." | Builds exactly those. |

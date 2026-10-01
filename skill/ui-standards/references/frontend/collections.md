@@ -20,9 +20,8 @@ Load for screens that show many records or one record in depth: tables, lists, g
 
 **Conditional**
 - C1 IF users can pick rows THEN apply FE-SEL-01.
-- C2 IF there are many columns THEN users can show or hide columns and the choice is remembered.
-- C3 IF the screen is narrow THEN each row becomes a labelled card or the table scrolls (FE-SHELL-03).
-- C4 IF cells are editable in place THEN Enter starts editing, Escape cancels, arrow keys move between cells, and each save is confirmed.
+- C2 IF the screen is narrow THEN each row becomes a labelled card or the table scrolls (FE-SHELL-03).
+- C3 IF cells are editable in place THEN Enter starts editing, Escape cancels, arrow keys move between cells, and each save is confirmed.
 
 **Suggest**
 - S1 Show or hide columns — lets each person keep only what they use.

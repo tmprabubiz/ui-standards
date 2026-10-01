@@ -1,12 +1,13 @@
 # ui-standards — Blueprint
 
-Version 1.2 · 2026-10-01 · Status: built
+Version 1.3 · 2026-10-01 · Status: built
 
 ## 1. Goal
 
-Give a non-technical app owner a **standard-parts catalogue** that any AI coding agent
-(Claude Code, Codex, Copilot, Cursor, others that read `AGENTS.md` or Agent Skills) loads
-on demand, routed first by app target (web, desktop, mobile, hybrid), so that:
+Give a non-technical app owner a **context-first app-building guide** that any AI coding
+agent (Claude Code, Codex, Copilot, Cursor, others that read `AGENTS.md` or Agent Skills)
+loads on demand. The owner describes any product/domain in their own words; runtime, product
+capabilities, build host and deployment constraints are discovered as separate axes. So that:
 
 1. Conventional front-end **and** back-end behaviour is built by default, not rediscovered
    through prompt wording.
@@ -14,9 +15,12 @@ on demand, routed first by app target (web, desktop, mobile, hybrid), so that:
    nothing is missed silently.
 3. Features that are useful but not essential are **asked about or advised**, never
    added silently, and land in a next-iteration list in plain English.
+4. Uncatalogued needs are surfaced rather than forced into an existing app category or
+   falsely claimed as covered.
 
-**Guardrail:** the catalogue describes *behaviour*, never a specific framework, visual
-style or brand. A project's own design and stack always win; the catalogue fills gaps.
+**Guardrail:** the catalogue describes reusable behavior and decision prompts, not an
+exhaustive set of product types. A project's domain, constraints, design and stack always
+win; the catalogue fills gaps without dictating what the app must be.
 
 ## 2. Non-goals
 
@@ -54,6 +58,10 @@ Gaps the research left open and this blueprint closes:
 | Paid provider calls lacked per-action safeguards | `FE-COST`, `BE-COST` |
 | No owner confirmation before each incremental slice | `SLICE-WALKTHROUGH.md` and per-screen confirmation |
 | Token cost and technical wording blocked adoption | `CORE-CARD.md` (≤2 KB) and `GLOSSARY.md` |
+| Examples risked appearing to define the full product universe | `CAPABILITIES.md` declares itself non-exhaustive and provides an uncatalogued-needs route |
+| Build-machine limits were conflated with runtime target | `BUILD-ENVIRONMENTS.md` treats host, remote build and app runtime separately |
+| Remote image build, cloud GPU/VM and provider dashboard needs were not covered | `BE-DEPLOY`, `BE-CLOUD`, `FE-CLOUD` with AWS/GCP examples behind provider-neutral contracts |
+| AI/media and knowledge workflows were only isolated examples | `FE-AI`, `BE-AI`, `FE-KNOW`, `BE-KNOW` are composable capabilities, not fixed app categories |
 
 ## 4. Architecture
 
@@ -63,8 +71,10 @@ ui-standards/
 │  ├─ SKILL.md                    entry: modes, procedure, precedence (short)
 │  └─ references/
 │     ├─ CORE-CARD.md             compact, owner-first rules loaded for every target
-│     ├─ PROFILES.md               target routing; local/web/hybrid boundaries
-│     ├─ PROCESS.md               phases, outputs, stack notes
+│     ├─ PROFILES.md               open set of runtime contexts; retrieval aid only
+│     ├─ CAPABILITIES.md           open-ended capability matching and uncatalogued-needs path
+│     ├─ BUILD-ENVIRONMENTS.md     host constraints, remote builds and cloud-provider examples
+│     ├─ PROCESS.md               context → slices → cover → build → verify
 │     ├─ CORE.md                  floors + 5-state frame (always applied)
 │     ├─ ADVISOR.md               question bank for defining the app
 │     ├─ SLICES.md                slice contract: screen ↔ API ↔ data ↔ checks
@@ -90,7 +100,7 @@ ui-standards/
 | Adapter line in AGENTS.md / CLAUDE.md | every session | ≤ 6 lines |
 | `SKILL.md` | when UI/app-structure work starts | ≤ 150 lines |
 | `CORE-CARD.md` | every activation | ≤ 2 KB |
-| `PROFILES.md`, one profile index, relevant process excerpts | selected by target | keep profile-specific |
+| `PROFILES.md`, capability map, one or more profile indexes | selected after owner context | indexes are aids, not closed classification |
 | `CORE.md` | only hosted/hybrid server slices | ≤ 250 lines |
 | Family files (`frontend/*`, `backend/*`) | only the families the INDEX matched | ≤ 400 lines each |
 
@@ -107,6 +117,9 @@ ui-standards/
 | FE-ACCT | frontend/account.md | sign-up/in, reset, profile, settings, onboarding, account deletion |
 | FE-DESK | frontend/desktop.md | window lifecycle, native file dialogs, stoppable local tasks, shortcuts, copyable diagnostics |
 | FE-COST | frontend/metered-actions.md | estimates, second confirmation, dry run, budgets, no duplicate paid calls |
+| FE-AI | frontend/ai-features.md | labelled generated/transformed content, review, rights and provenance |
+| FE-CLOUD | frontend/cloud-operations.md | app dashboards that view/control real cloud resources |
+| FE-KNOW | frontend/knowledge-base.md | source-grounded search/answers and source status |
 | BE-API | backend/api.md | contract, errors, validation, pagination, idempotency, versioning |
 | BE-AUTH | backend/auth.md | authentication, sessions, roles/permissions, OAuth, password reset |
 | BE-DATA | backend/data.md | schema conventions, migrations, soft delete, audit log, backups, seed |
@@ -115,6 +128,10 @@ ui-standards/
 | BE-OPS | backend/ops.md | config/secrets, logging, health, rate limiting, security headers, privacy export/delete |
 | BE-LOCAL | backend/local-first.md | local persistence, safe file operations, durable task ledger |
 | BE-COST | backend/metered-actions.md | paid-provider secrets, idempotency, reconciliation, cost ledger and limits |
+| BE-AI | backend/ai-services.md | model provider boundaries, untrusted inputs, data minimization and output trace |
+| BE-CLOUD | backend/cloud-resources.md | cloud accounts, least privilege, cost guardrails and VM/GPU lifecycle |
+| BE-DEPLOY | backend/build-and-deploy.md | remote image builds, releases, health checks and rollback |
+| BE-KNOW | backend/knowledge-base.md | source versioning, ingestion/index lifecycle and retrieval grounding |
 
 ### Entry format
 
@@ -125,15 +142,18 @@ Defined in [ENTRY-FORMAT.md](ENTRY-FORMAT.md) and enforced by `scripts/validate.
 | Phase | Agent does | Output in the app |
 |---|---|---|
 | 0 Detect | Resume existing coverage; identify stack and test runner | — |
-| 1 Target | Ask web / desktop / mobile / hybrid first; locate data and paid services | Target and Frame |
-| 2 Cast | Load CORE card and target index; match only relevant families | Cast table |
-| 3 Walk through | One owner-readable line per screen/slice: do → see → saved on failure; confirm before code | Walkthrough table |
-| 4 Cover | Required + true Conditional, Suggest, Approval, deliberate exclusions | Cover table |
-| 5 Build | One confirmed slice at a time; tests first; don't weaken existing tests | Code and tests |
-| 6 Gate and advise | Verify acceptance; report applied codes and next options | Gate + NEXT-ITERATION.md |
+| 1 Discover | Restate goal/users/domain/workflow and consequential unknowns | Owner-checked Frame |
+| 2 Context | Separate data, rights, runtime, build host, services, delivery and cost | Context record |
+| 3 Cast | Use capability and runtime indexes as retrieval aids; allow uncatalogued needs | Cast + gap list |
+| 4 Walk through | One owner-readable line per screen/slice: do → see → saved on failure; confirm before code | Walkthrough table |
+| 5 Cover | Required + true Conditional, Suggest, Approval, deliberate exclusions and uncatalogued work | Cover table |
+| 6 Build | One confirmed slice at a time; tests first; don't weaken existing tests | Code and tests |
+| 7 Gate and advise | Verify acceptance; report applied codes, unknowns and next options | Gate + NEXT-ITERATION.md |
 
-Modes: **BUILD** (default when the user asks to build) runs 0–6. **ADVISE** (when the user
-is defining or asks "what am I missing") runs 0–3 and 6 with no code.
+Modes: **BUILD** (when the user asks to build) runs discovery through verification.
+**ADVISE** (when defining an idea or asking "what am I missing") prepares context, coverage
+and next options without code. The catalogue is not a substitute for project-specific domain
+research or owner decisions.
 
 Precedence: explicit user instruction → floors (security, data safety, accessibility) →
 specific entry → CORE defaults → suggestions. A user may decline anything except a floor;
@@ -163,6 +183,7 @@ overriding a floor needs a recorded exception in COVERAGE.md.
 ## 8. Growth rules
 
 - New entry needs: a real miss recorded in `GAPS.md`, and either an authoritative source
-  or the pattern in 3+ mature products.
+   or evidence that the pattern generalizes across more than one project/context. One project
+   can report a gap; it does not alone define a universal rule.
 - Required list capped at 7 per entry; move extras to Conditional or Suggest.
 - Every tie-break recorded in `DECISIONS.md`.

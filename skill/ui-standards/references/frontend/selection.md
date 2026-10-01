@@ -11,7 +11,7 @@ Load when users pick one or many things from a set, choose from options, tag ite
 
 **Required**
 - R1 One selection control per item, with an accessible name naming the item ("Select Intro.mp3"); its target is at least 24 × 24 px (CORE F9).
-- R2 A select-all control has three states: none, all, and mixed (indeterminate); activating it from mixed always resolves to one predictable result (default: select all on this page) and never stays mixed.
+- R2 A select-all control has three states: none, all, and mixed (some selected); expose mixed programmatically (`aria-checked="mixed"` or the platform equivalent). Activating it from mixed resolves predictably (default: select all on this page) and never stays mixed.
 - R3 The selected count is visible and announced politely whenever at least one item is selected; an action bar appears naming the available actions and disables those that do not apply.
 - R4 Selection survives sorting and paging; it clears when a filter or search changes the set, and clears after an action completes except for items that failed.
 - R5 Row behaviour is unambiguous: clicking the name opens the item, the checkbox selects, and one click never does both.
