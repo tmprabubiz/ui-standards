@@ -9,3 +9,6 @@ Thumbs.db
 
 # Local launch drafts (posted manually by the owner)
 launch/
+
+# Owner's personal to-do list
+To To By User.md
