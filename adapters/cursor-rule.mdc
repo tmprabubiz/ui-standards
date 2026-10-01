@@ -1,0 +1,8 @@
+---
+description: Standard-parts catalogue for app screens, features, APIs, data and accounts. Use when planning, building or extending app features, or when asked what the app is missing.
+alwaysApply: false
+---
+
+Read and follow `.agents/skills/ui-standards/SKILL.md`.
+Keep `docs/ui-standards/COVERAGE.md` and `docs/ui-standards/NEXT-ITERATION.md` current.
+When the owner asks "what am I missing" or "what next", use the skill in ADVISE mode.

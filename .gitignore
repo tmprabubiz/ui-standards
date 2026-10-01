@@ -1,0 +1,8 @@
+# Local research notes (reference only)
+Research/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.tmp

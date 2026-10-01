@@ -1,0 +1,52 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/validate.mjs
+      - name: Installer smoke test
+        run: |
+          mkdir -p /tmp/app
+          bash install/install.sh /tmp/app claude,codex,copilot,cursor
+          bash install/install.sh /tmp/app claude,codex,copilot,cursor
+          test -f /tmp/app/.agents/skills/ui-standards/SKILL.md
+          test -f /tmp/app/.claude/skills/ui-standards/SKILL.md
+          test -f /tmp/app/.cursor/rules/ui-standards.mdc
+          test "$(grep -c 'ui-standards:start' /tmp/app/AGENTS.md)" = 1
+          test "$(grep -c 'ui-standards:start' /tmp/app/CLAUDE.md)" = 1
+          test "$(grep -c 'ui-standards:start' /tmp/app/.github/copilot-instructions.md)" = 1
+          printf '<!-- ui-standards:start -->\nkeep me\n' > /tmp/app/BROKEN.md
+          cp /tmp/app/BROKEN.md /tmp/app/AGENTS.md
+          if bash install/install.sh /tmp/app codex; then echo "broken markers not rejected"; exit 1; fi
+          grep -q 'keep me' /tmp/app/AGENTS.md
+
+  windows-install:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer smoke test (PowerShell)
+        shell: pwsh
+        run: |
+          $t = Join-Path $env:RUNNER_TEMP 'app'
+          New-Item -ItemType Directory $t | Out-Null
+          ./install/install.ps1 -Target $t -Tools claude,codex,copilot,cursor
+          ./install/install.ps1 -Target $t -Tools claude,codex,copilot,cursor
+          foreach ($p in '.agents/skills/ui-standards/SKILL.md', '.claude/skills/ui-standards/SKILL.md', '.cursor/rules/ui-standards.mdc') {
+            if (-not (Test-Path (Join-Path $t $p))) { throw "missing $p" }
+          }
+          foreach ($f in 'AGENTS.md', 'CLAUDE.md', '.github/copilot-instructions.md') {
+            $n = (Select-String -Path (Join-Path $t $f) -Pattern 'ui-standards:start').Count
+            if ($n -ne 1) { throw "$f has $n blocks" }
+          }
