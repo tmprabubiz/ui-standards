@@ -15,12 +15,26 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+      - run: npm ci
       - run: node scripts/validate.mjs
       - name: Installer smoke test
         run: |
           mkdir -p /tmp/app
           bash install/install.sh /tmp/app claude,codex,copilot,cursor
+          test -f /tmp/app/docs/ui-standards/COVERAGE.md
+          test -f /tmp/app/docs/ui-standards/NEXT-ITERATION.md
+          test -f /tmp/app/docs/ui-standards/SLICE-WALKTHROUGH.md
+          printf '\nowner note\n' >> /tmp/app/docs/ui-standards/SLICE-WALKTHROUGH.md
+          printf 'owner reference\n' > /tmp/app/.agents/skills/ui-standards/references/owner-note.md
+          printf 'owner reference\n' > /tmp/app/.claude/skills/ui-standards/references/owner-note.md
+          printf 'stale shipped content\n' > /tmp/app/.agents/skills/ui-standards/SKILL.md
+          printf 'stale shipped content\n' > /tmp/app/.claude/skills/ui-standards/SKILL.md
           bash install/install.sh /tmp/app claude,codex,copilot,cursor
+          grep -q 'owner note' /tmp/app/docs/ui-standards/SLICE-WALKTHROUGH.md
+          test -f /tmp/app/.agents/skills/ui-standards/references/owner-note.md
+          test -f /tmp/app/.claude/skills/ui-standards/references/owner-note.md
+          cmp -s skill/ui-standards/SKILL.md /tmp/app/.agents/skills/ui-standards/SKILL.md
+          cmp -s skill/ui-standards/SKILL.md /tmp/app/.claude/skills/ui-standards/SKILL.md
           test -f /tmp/app/.agents/skills/ui-standards/SKILL.md
           test -f /tmp/app/.claude/skills/ui-standards/SKILL.md
           test -f /tmp/app/.cursor/rules/ui-standards.mdc
@@ -36,13 +50,37 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
       - name: Installer smoke test (PowerShell)
         shell: pwsh
         run: |
           $t = Join-Path $env:RUNNER_TEMP 'app'
           New-Item -ItemType Directory $t | Out-Null
           ./install/install.ps1 -Target $t -Tools claude,codex,copilot,cursor
+          foreach ($p in 'docs/ui-standards/COVERAGE.md', 'docs/ui-standards/NEXT-ITERATION.md', 'docs/ui-standards/SLICE-WALKTHROUGH.md') {
+            if (-not (Test-Path (Join-Path $t $p))) { throw "missing $p" }
+          }
+          Add-Content (Join-Path $t 'docs/ui-standards/SLICE-WALKTHROUGH.md') 'owner note'
+          foreach ($p in '.agents/skills/ui-standards/references/owner-note.md', '.claude/skills/ui-standards/references/owner-note.md') {
+            $customFile = Join-Path $t $p
+            New-Item -ItemType Directory -Force (Split-Path -Parent $customFile) | Out-Null
+            Set-Content -NoNewline -Encoding utf8 $customFile 'owner reference'
+          }
+          foreach ($p in '.agents/skills/ui-standards/SKILL.md', '.claude/skills/ui-standards/SKILL.md') {
+            Set-Content -NoNewline -Encoding utf8 (Join-Path $t $p) 'stale shipped content'
+          }
           ./install/install.ps1 -Target $t -Tools claude,codex,copilot,cursor
+          if (-not (Select-String -Path (Join-Path $t 'docs/ui-standards/SLICE-WALKTHROUGH.md') -Pattern 'owner note')) { throw 'owner walkthrough was overwritten' }
+          foreach ($p in '.agents/skills/ui-standards/references/owner-note.md', '.claude/skills/ui-standards/references/owner-note.md') {
+            if (-not (Test-Path (Join-Path $t $p))) { throw "owner file was overwritten: $p" }
+          }
+          foreach ($p in '.agents/skills/ui-standards/SKILL.md', '.claude/skills/ui-standards/SKILL.md') {
+            if ((Get-FileHash (Join-Path $t $p)).Hash -ne (Get-FileHash 'skill/ui-standards/SKILL.md').Hash) { throw "shipped skill file was not refreshed: $p" }
+          }
+          npm ci
+          node scripts/validate.mjs
           foreach ($p in '.agents/skills/ui-standards/SKILL.md', '.claude/skills/ui-standards/SKILL.md', '.cursor/rules/ui-standards.mdc') {
             if (-not (Test-Path (Join-Path $t $p))) { throw "missing $p" }
           }

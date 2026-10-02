@@ -6,6 +6,7 @@ Research/
 Thumbs.db
 .vscode/
 *.tmp
+node_modules/
 
 # Local launch drafts (posted manually by the owner)
 launch/

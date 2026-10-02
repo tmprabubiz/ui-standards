@@ -2,6 +2,12 @@
 
 Thanks for helping make AI-built apps more complete. Two kinds of contribution matter most.
 
+## Development setup
+
+Use Node.js 22 or newer and run `npm ci` before validation. The YAML parser is a
+development-only dependency for this repository's skill validator; installed app projects
+do not need Node.js or this package.
+
 ## 1. Report a missing convention (no coding needed)
 
 Your agent built something and left out behaviour you expected, such as an undo,
@@ -14,6 +20,7 @@ becomes evidence in [GAPS.md](GAPS.md) for a new entry.
 1. Pick an open issue labelled `good first issue` or `new entry`, or a row in `GAPS.md`.
 2. Follow [docs/ENTRY-FORMAT.md](docs/ENTRY-FORMAT.md). Each entry must have:
    - 1–7 Required items
+   - a `**Composes:**` field, or `None.` when there are no dependencies
    - Conditional items written as `IF … THEN …`
    - at least 3 acceptance checks written as "Given …, when …, then …"
    - a Source line labelled (standard), (convention) or (proposal)
@@ -22,6 +29,7 @@ becomes evidence in [GAPS.md](GAPS.md) for a new entry.
 4. Run the checks:
 
    ```bash
+   npm ci
    node scripts/build-index.mjs
    node scripts/validate.mjs
    ```

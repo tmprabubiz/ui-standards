@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { parse } from 'yaml';
 import {
     buildIndex,
     buildProfileIndex,
@@ -9,31 +10,68 @@ import {
     listMarkdown,
     parseEntries,
     PROFILE_INDEXES,
-    read, relPath,
+    read, REF_DIR, relPath,
+    ROOT,
     SKILL_DIR,
 } from './lib.mjs';
 
 const errors = [];
-const warnings = [];
 const err = (where, msg) => errors.push(`${where}: ${msg}`);
 
 const REQUIRED_FIELDS = ['**Purpose:**', '**Triggers:**', '**Applies when:**', '**Required**',
-  '**Conditional**', '**Suggest**', '**Approval**', '**Acceptance**', '**Source:**'];
+  '**Composes:**', '**Conditional**', '**Suggest**', '**Approval**', '**Acceptance**', '**Source:**'];
+const WALKTHROUGH_DIMENSIONS = [
+  'Visual', 'States', 'Data', 'Interactions', 'Associated elements', 'Responsive',
+  'Accessibility', 'Navigation', 'First run', 'Risk & approval',
+];
 
 // SKILL.md frontmatter (Agent Skills spec)
 const skillPath = join(SKILL_DIR, 'SKILL.md');
 const skill = read(skillPath);
 const fm = skill.match(/^---\n([\s\S]*?)\n---\n/);
+let skillFrontmatter;
 if (!fm) err('SKILL.md', 'missing YAML frontmatter on line 1');
 else {
-  const name = fm[1].match(/^name:\s*(.+)$/m)?.[1].trim();
-  const desc = fm[1].match(/^description:\s*(.+)$/m)?.[1].trim();
-  if (name !== 'ui-standards') err('SKILL.md', `name must be "ui-standards" (got "${name}")`);
-  if (!desc) err('SKILL.md', 'description missing');
-  else if (desc.length > 1024) err('SKILL.md', `description is ${desc.length} chars (max 1024)`);
-  const allowed = new Set(['name', 'description', 'license', 'compatibility', 'metadata', 'allowed-tools']);
-  for (const key of fm[1].matchAll(/^([a-z][\w-]*):/gm)) {
-    if (!allowed.has(key[1])) err('SKILL.md', `frontmatter key "${key[1]}" is outside the Agent Skills spec`);
+  try {
+    skillFrontmatter = parse(fm[1]);
+  } catch (error) {
+    err('SKILL.md', `invalid YAML frontmatter: ${error.message}`);
+  }
+  if (skillFrontmatter !== undefined) {
+    if (!skillFrontmatter || typeof skillFrontmatter !== 'object' || Array.isArray(skillFrontmatter)) {
+      err('SKILL.md', 'frontmatter must be a YAML mapping');
+    } else {
+      if (skillFrontmatter.name !== 'ui-standards') {
+        err('SKILL.md', `name must be "ui-standards" (got "${skillFrontmatter.name}")`);
+      }
+      const desc = skillFrontmatter.description;
+      if (typeof desc !== 'string' || !desc.trim()) err('SKILL.md', 'description missing');
+      else {
+        if (desc.length > 1024) err('SKILL.md', `description is ${desc.length} chars (max 1024)`);
+        if (!/\b(?:use when|asks?)\b/i.test(desc)) err('SKILL.md', 'description must include invocation phrasing');
+      }
+      const allowed = new Set(['name', 'description', 'license', 'compatibility', 'metadata', 'allowed-tools']);
+      for (const key of Object.keys(skillFrontmatter)) {
+        if (!allowed.has(key)) err('SKILL.md', `frontmatter key "${key}" is outside the Agent Skills spec`);
+      }
+      if (!skillFrontmatter.metadata || typeof skillFrontmatter.metadata !== 'object' || Array.isArray(skillFrontmatter.metadata)) {
+        err('SKILL.md', 'metadata must be a YAML mapping');
+      } else {
+        for (const [key, value] of Object.entries(skillFrontmatter.metadata)) {
+          if (typeof value !== 'string') err('SKILL.md', `metadata.${key} must be a string`);
+        }
+        const latestVersion = read(join(ROOT, 'CHANGELOG.md')).match(/^##\s+(\d+\.\d+\.\d+)\b/m)?.[1];
+        if (typeof skillFrontmatter.metadata.version !== 'string') err('SKILL.md', 'metadata.version must be a string');
+        else if (latestVersion && skillFrontmatter.metadata.version !== latestVersion) {
+          err('SKILL.md', `metadata.version ${skillFrontmatter.metadata.version} does not match latest CHANGELOG version ${latestVersion}`);
+        }
+      }
+      for (const key of ['license', 'compatibility', 'allowed-tools']) {
+        if (Object.hasOwn(skillFrontmatter, key) && typeof skillFrontmatter[key] !== 'string') {
+          err('SKILL.md', `${key} must be a string`);
+        }
+      }
+    }
   }
 }
 if (skill.split('\n').length > 150) err('SKILL.md', 'over 150 lines (budget in docs/BLUEPRINT.md)');
@@ -55,6 +93,8 @@ for (const e of entries) {
 
   const text = e.body.join('\n');
   for (const f of REQUIRED_FIELDS) if (!text.includes(f)) err(where, `${e.code} missing ${f}`);
+  const composes = field(e.body, 'Composes');
+  if (composes === null || !composes.trim()) err(where, `${e.code} has empty Composes (write None. when there are no dependencies)`);
   const contract = e.code.startsWith('FE-') ? '**Backend contract**' : '**Frontend contract**';
   if (!text.includes(contract)) err(where, `${e.code} missing ${contract}`);
 
@@ -103,6 +143,20 @@ for (const required of ['ADVISOR.md', 'PROFILES.md', 'CAPABILITIES.md', 'BUILD-E
   }
 }
 
+const walkthroughPath = join(REF_DIR, 'templates', 'SLICE-WALKTHROUGH.md');
+if (!existsSync(walkthroughPath)) err('SLICE-WALKTHROUGH.md', 'missing screen contract template');
+else {
+  const walkthrough = read(walkthroughPath);
+  for (const dimension of WALKTHROUGH_DIMENSIONS) {
+    if (!walkthrough.includes(`| ${dimension} |`)) err('SLICE-WALKTHROUGH.md', `missing ${dimension} dimension`);
+  }
+}
+const coverageTemplate = read(join(REF_DIR, 'templates', 'COVERAGE.md'));
+const catalogueVersion = skillFrontmatter?.metadata?.version;
+if (typeof catalogueVersion === 'string' && !coverageTemplate.includes(`Catalogue version: ${catalogueVersion}`)) {
+  err('templates/COVERAGE.md', `catalogue version does not match SKILL.md (${catalogueVersion})`);
+}
+
 // Size budgets (docs/BLUEPRINT.md § Loading model)
 const BUDGETS = { 'CORE.md': 250, 'INDEX.md': 250, 'PROCESS.md': 250, 'CORE-CARD.md': 80 };
 for (const file of listMarkdown(join(SKILL_DIR, 'references'))) {
@@ -112,7 +166,6 @@ for (const file of listMarkdown(join(SKILL_DIR, 'references'))) {
   if (n > limit) err(relPath(file), `${n} lines (budget ${limit})`);
 }
 
-for (const w of warnings) console.warn(`warn  ${w}`);
 for (const e of errors) console.error(`error ${e}`);
-console.log(`\n${codes.size} entries · ${errors.length} errors · ${warnings.length} warnings`);
+console.log(`\n${codes.size} entries · ${errors.length} errors`);
 process.exitCode = errors.length ? 1 : 0;

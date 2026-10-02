@@ -62,7 +62,7 @@ or `.../backend/`. `scripts/validate.mjs` enforces this format.
 | Heading | `## <CODE> · <Title>` where CODE is `FE-<FAMILY>-NN` or `BE-<FAMILY>-NN` |
 | Family | Must match the file's family (e.g. `FE-SEL` only in `frontend/selection.md`) |
 | Unique | Each code appears as a heading exactly once across the catalogue |
-| Fields | `**Purpose:**`, `**Triggers:**`, `**Applies when:**`, `**Required**`, `**Conditional**`, `**Suggest**`, `**Approval**`, `**Acceptance**`, `**Source:**` |
+| Fields | `**Purpose:**`, `**Triggers:**`, `**Applies when:**`, `**Composes:**`, `**Required**`, `**Conditional**`, `**Suggest**`, `**Approval**`, `**Acceptance**`, `**Source:**`; write `None.` when there are no composed entries |
 | Contract | FE entries need `**Backend contract**`; BE entries need `**Frontend contract**`. Write `- None.` when there is none. |
 | Budget | 1–7 Required items (`- R1` …) |
 | Conditional form | Each item reads `- C<n> IF … THEN …` |

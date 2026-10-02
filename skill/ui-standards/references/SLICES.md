@@ -12,10 +12,18 @@ Write one block per slice in COVERAGE.md:
 Slice S3 · Delete recordings in bulk
 Goal: The owner removes several recordings at once and can undo.
 Screen: Recordings list (FE-COLL-01, FE-SEL-01, FE-FEED-02)
+Visual: Selected recordings are clearly distinguished; destructive actions are visually separated.
+Interactions: Select, clear, delete, cancel and undo; show feedback after each action.
+Associated elements: Confirmation or undo notice, selection controls, and per-item failure details.
+Responsive: Keep selection and primary actions usable when the window narrows or text is enlarged.
+Accessibility: Keyboard path, accessible names, visible focus, and focus return after dialogs.
+Navigation: Entry point, destinations, and return-to-list behavior.
 Operation/API: POST /recordings/bulk-delete {ids[]} → per-item results (BE-API-05), or local delete operation (BE-LOCAL-02)
 Data: recordings.deleted_at (soft delete, BE-DATA-03) or local recovery record; purge job only if configured
 Permissions: per-record check for shared/hosted data (CORE F11); local ownership for single-user files
-States: loading, empty, error, partial (some failed), disabled (nothing selected)
+States: default, loading, empty, no results, error (input retained), unavailable/not allowed, partial (some failed), disabled (nothing selected)
+First run: What changes on the first launch compared with later use?
+Risk/approval: Bulk deletion and any action without recovery require explicit approval.
 Checks: FE-SEL-01 acceptance 1–3; BE-API-05 acceptance 1–3
 ```
 

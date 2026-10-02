@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 — 2026-10-02
+
+- Replaced the short slice walkthrough with an owner-confirmed per-screen contract covering visual design, states, data, interactions, associated elements, responsiveness, accessibility, navigation, first-run differences and risks.
+- Require every catalogue entry to declare its composed dependencies and validate the walkthrough dimensions and version metadata.
+- Preserve owner-added skill files during reinstall and document the validator's development-only YAML dependency.
+
 ## 1.3.0 — 2026-10-01
 
 - Reframed the skill as context-first guidance for any app/domain; examples and profiles are retrieval aids, not a closed taxonomy.

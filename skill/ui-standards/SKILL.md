@@ -3,9 +3,7 @@ name: ui-standards
 description: Context-first planning and standards for building any kind of app, in any domain, stack, runtime or development environment. Use when an owner describes an app idea, feature, workflow, service, AI/media capability, cloud resource, build or deployment constraint, asks what is missing, or wants a next-iteration plan. Discovers the actual need before matching reusable patterns; never forces an unfamiliar app into a fixed category.
 license: MIT
 compatibility: Any agent that reads Agent Skills (Claude Code, Codex, Copilot, Cursor). No runtime dependencies.
-metadata:
-   version: "1.3.0"
-  repository: "https://github.com/tmprabubiz/ui-standards"
+metadata: { version: "1.4.0", repository: "https://github.com/tmprabubiz/ui-standards" }
 ---
 
 # App-Building Standards
@@ -53,10 +51,12 @@ If unclear, use ADVISE first, then offer to build.
    is true, and record why any dependency is excluded. For hybrid apps, use client rules for
    local slices and service rules only for networked slices. Skip unrelated families.
 5. **Cover and walkthrough.** Fill [templates/COVERAGE.md](references/templates/COVERAGE.md)
-   at `docs/ui-standards/COVERAGE.md`. Before code, show the owner one line per screen or
-   slice: what they do, what they see, and what is saved if it fails. Use
-   [templates/SLICE-WALKTHROUGH.md](references/templates/SLICE-WALKTHROUGH.md); wait for
-   confirmation of each slice. Slices follow [SLICES.md](references/SLICES.md).
+   at `docs/ui-standards/COVERAGE.md`. Before code, complete one block per screen in
+   `docs/ui-standards/SLICE-WALKTHROUGH.md`: Visual, States, Data, Interactions, Associated
+   elements, Responsive, Accessibility, Navigation, first-run differences and risks. Name
+   loading, empty, no-results, error, unavailable/not-allowed and partial states; use
+   “N/A” only with a reason. Get the owner's approval for each screen before building it.
+   Slices follow [SLICES.md](references/SLICES.md).
 6. **Build** (BUILD mode only). Work one confirmed slice at a time. Read existing tests,
    write/update the acceptance test first, then implement. Never remove or weaken a failing
    test to make a change pass. Use the project's existing stack and libraries.

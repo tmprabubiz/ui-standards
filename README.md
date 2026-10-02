@@ -130,8 +130,10 @@ agent files:
 | Copilot | a block in `.github/copilot-instructions.md` |
 | Cursor | `.cursor/rules/ui-standards.mdc` |
 
-The installer is safe to run again: it replaces its own block and leaves the rest of your
-files alone. To update, `git pull` in the ui-standards folder and run the installer again.
+The installer is safe to run again: it refreshes shipped skill files in place, preserves
+owner-added files and template edits, and replaces only its adapter block. It does not delete
+files removed from a newer catalogue version. To update, `git pull` in the ui-standards folder
+and run the installer again.
 
 ## Use
 
@@ -161,6 +163,7 @@ families your request matches are read. See [docs/BLUEPRINT.md](docs/BLUEPRINT.m
 - Entry format: [docs/ENTRY-FORMAT.md](docs/ENTRY-FORMAT.md). Check before committing:
 
 ```bash
+npm ci
 node scripts/build-index.mjs
 node scripts/validate.mjs
 ```

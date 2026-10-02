@@ -1,6 +1,6 @@
 # ui-standards — Blueprint
 
-Version 1.3 · 2026-10-01 · Status: built
+Version 1.4 · 2026-10-02 · Status: built
 
 ## 1. Goal
 
@@ -73,7 +73,7 @@ ui-standards/
 │     ├─ CORE-CARD.md             compact, owner-first rules loaded for every target
 │     ├─ PROFILES.md               open set of runtime contexts; retrieval aid only
 │     ├─ CAPABILITIES.md           open-ended capability matching and uncatalogued-needs path
-│     ├─ BUILD-ENVIRONMENTS.md     host constraints, remote builds and cloud-provider examples
+│  ├─ scripts/                       validate.mjs (yaml dev dependency), build-index.mjs (no deps)
 │     ├─ PROCESS.md               context → slices → cover → build → verify
 │     ├─ CORE.md                  floors + 5-state frame (always applied)
 │     ├─ ADVISOR.md               question bank for defining the app
@@ -145,7 +145,7 @@ Defined in [ENTRY-FORMAT.md](ENTRY-FORMAT.md) and enforced by `scripts/validate.
 | 1 Discover | Restate goal/users/domain/workflow and consequential unknowns | Owner-checked Frame |
 | 2 Context | Separate data, rights, runtime, build host, services, delivery and cost | Context record |
 | 3 Cast | Use capability and runtime indexes as retrieval aids; allow uncatalogued needs | Cast + gap list |
-| 4 Walk through | One owner-readable line per screen/slice: do → see → saved on failure; confirm before code | Walkthrough table |
+| 4 Walk through | Complete one owner-approved contract per screen covering visual, states, data, interactions, associated elements, responsiveness, accessibility, navigation and risks | Screen walkthrough |
 | 5 Cover | Required + true Conditional, Suggest, Approval, deliberate exclusions and uncatalogued work | Cover table |
 | 6 Build | One confirmed slice at a time; tests first; don't weaken existing tests | Code and tests |
 | 7 Gate and advise | Verify acceptance; report applied codes, unknowns and next options | Gate + NEXT-ITERATION.md |

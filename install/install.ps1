@@ -22,10 +22,21 @@ $Start = '<!-- ui-standards:start -->'
 $End = '<!-- ui-standards:end -->'
 
 function Copy-Skill([string]$Dest) {
-    if (Test-Path $Dest) { Remove-Item -Recurse -Force $Dest }
-    New-Item -ItemType Directory -Force (Split-Path -Parent $Dest) | Out-Null
-    Copy-Item -Recurse $Skill $Dest
+    New-Item -ItemType Directory -Force $Dest | Out-Null
+    Copy-Item -Path (Join-Path $Skill '*') -Destination $Dest -Recurse -Force
     Write-Host "  skill  -> $Dest"
+}
+
+function Seed-Templates([string]$TargetPath) {
+    $sourceDir = Join-Path $Skill 'references/templates'
+    $targetDir = Join-Path $TargetPath 'docs/ui-standards'
+    New-Item -ItemType Directory -Force $targetDir | Out-Null
+    foreach ($name in 'COVERAGE.md', 'NEXT-ITERATION.md', 'SLICE-WALKTHROUGH.md') {
+        $source = Join-Path $sourceDir $name
+        $destination = Join-Path $targetDir $name
+        if (-not (Test-Path $destination)) { Copy-Item $source $destination }
+    }
+    Write-Host "  templates -> $targetDir"
 }
 
 function Set-Block([string]$File, [string]$SnippetName) {
@@ -65,6 +76,7 @@ $Target = (Resolve-Path $Target).Path
 Write-Host "Installing ui-standards into $Target ($($Tools -join ', '))"
 
 Copy-Skill (Join-Path $Target '.agents/skills/ui-standards')
+Seed-Templates $Target
 Set-Block (Join-Path $Target 'AGENTS.md') 'AGENTS.snippet.md'
 
 if ($Tools -contains 'claude') {

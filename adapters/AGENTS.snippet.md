@@ -6,4 +6,6 @@ limit, remote build, cloud resource or deployment question, follow the `ui-stand
 at `.agents/skills/ui-standards/SKILL.md`.
 Keep `docs/ui-standards/COVERAGE.md` and `docs/ui-standards/NEXT-ITERATION.md` current.
 When the owner asks "what am I missing" or "what next", use the skill in ADVISE mode.
+Before writing UI code, complete and get owner approval for each screen block in
+`docs/ui-standards/SLICE-WALKTHROUGH.md`; do not build an unconfirmed screen.
 <!-- ui-standards:end -->

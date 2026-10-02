@@ -12,10 +12,20 @@ START='<!-- ui-standards:start -->'
 END='<!-- ui-standards:end -->'
 
 copy_skill() {
-  rm -rf "$1"
-  mkdir -p "$(dirname "$1")"
-  cp -R "$SKILL" "$1"
+  mkdir -p "$1"
+  cp -R "$SKILL/." "$1/"
   echo "  skill  -> $1"
+}
+
+seed_templates() {
+  local target_dir="$1/docs/ui-standards"
+  mkdir -p "$target_dir"
+  for name in COVERAGE.md NEXT-ITERATION.md SLICE-WALKTHROUGH.md; do
+    if [ ! -e "$target_dir/$name" ]; then
+      cp "$SKILL/references/templates/$name" "$target_dir/$name"
+    fi
+  done
+  echo "  templates -> $target_dir"
 }
 
 set_block() {
@@ -58,6 +68,7 @@ TARGET="$(cd "$TARGET" && pwd)"
 echo "Installing ui-standards into $TARGET ($TOOLS)"
 
 copy_skill "$TARGET/.agents/skills/ui-standards"
+seed_templates "$TARGET"
 set_block "$TARGET/AGENTS.md" AGENTS.snippet.md
 
 case ",$TOOLS," in *,claude,*)
